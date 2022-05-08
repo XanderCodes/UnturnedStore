@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Website.Components.Helpers;
 
@@ -70,7 +71,7 @@ namespace Website.Components.MarkdownEditor
 
         private void UpdatePreview()
         {
-            _previewText = MarkdownHelper.ParseToHtml(Value.ToString(), DisableHtml);
+            _previewText = MarkdownHelper.ParseToHtml(Regex.Replace(Value.ToString(), "<.*?>", String.Empty), DisableHtml);
         }
 
         private void HandleBoldClick()

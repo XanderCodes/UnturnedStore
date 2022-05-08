@@ -5,6 +5,8 @@ using System.Net.Http.Json;
 using Microsoft.JSInterop;
 using Website.Shared.Models.Database;
 using Website.Shared.Models;
+using System.Text.RegularExpressions;
+using System;
 
 namespace Website.Client.Pages.Seller.ProductPage.Components
 {
@@ -49,12 +51,19 @@ namespace Website.Client.Pages.Seller.ProductPage.Components
             if (Tab.Id == default)
             {
                 Tab.ProductId = Product.Id;
+                Tab.Content = Regex.Replace(Tab.Content, "<.*?>", String.Empty);
                 var response = await HttpClient.PostAsJsonAsync("api/products/tabs", Tab);
+
                 Product.Tabs.Add(await response.Content.ReadFromJsonAsync<MProductTab>());
+
+                
+
                 Tab = new MProductTab();
             }
             else
             {
+                Tab.Content = Regex.Replace(Tab.Content, "<.*?>", String.Empty);
+
                 await HttpClient.PutAsJsonAsync("api/products/tabs", Tab);
             }
 
